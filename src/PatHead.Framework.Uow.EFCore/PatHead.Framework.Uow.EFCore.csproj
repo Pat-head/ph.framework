@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Version>0.0.0.1</Version>
+        <AssemblyName>PatHead.Framework.Uow.EFCore</AssemblyName>
+        <RootNamespace>PatHead.Framework.Uow.EFCore</RootNamespace>
+        <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
+        <Description>
+            PatHead Framework Uow EFCore
+        </Description>
+        <Authors>PatHead</Authors>
+        <Owners>PatHead</Owners>
+        <Title>PatHead.Framework.Uow.EFCore</Title>
+        <Summary>PatHead Framework Uow EFCore</Summary>
+        <RepositoryUrl>https://github.com/Pat-head/ph.framework</RepositoryUrl>
+        <PackageId>PatHead.Framework.Uow.EFCore</PackageId>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\PatHead.Framework.Repository\PatHead.Framework.Repository.csproj" />
+      <ProjectReference Include="..\PatHead.Framework.Uow\PatHead.Framework.Uow.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="EFCore.NamingConventions" Version="1.1.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
+    </ItemGroup>
+
+</Project>
