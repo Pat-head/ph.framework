@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using PatHead.Framework.Repository;
+using PatHead.Framework.Uow.Repository;
 
 namespace PatHead.Framework.Uow.EFCore
 {

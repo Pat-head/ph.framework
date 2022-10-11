@@ -2,7 +2,7 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>0.0.0.1</Version>
+        <Version>0.0.0.2</Version>
         <AssemblyName>PatHead.Framework.Uow.EFCore</AssemblyName>
         <RootNamespace>PatHead.Framework.Uow.EFCore</RootNamespace>
         <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
@@ -18,7 +18,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PatHead.Framework.Repository\PatHead.Framework.Repository.csproj" />
       <ProjectReference Include="..\PatHead.Framework.Uow\PatHead.Framework.Uow.csproj" />
     </ItemGroup>
 

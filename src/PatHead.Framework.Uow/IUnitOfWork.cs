@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using PatHead.Framework.Repository;
+using PatHead.Framework.Uow.Repository;
 
 namespace PatHead.Framework.Uow
 {

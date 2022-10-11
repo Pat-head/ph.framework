@@ -2,15 +2,25 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Version>0.0.0.2</Version>
+        <AssemblyName>PatHead.Framework.Uow</AssemblyName>
+        <RootNamespace>PatHead.Framework.Uow</RootNamespace>
+        <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
+        <Description>
+            PatHead Framework Uow
+        </Description>
+        <Authors>PatHead</Authors>
+        <Owners>PatHead</Owners>
+        <Title>PatHead.Framework.Uow</Title>
+        <Summary>PatHead Framework Uow</Summary>
+        <RepositoryUrl>https://github.com/Pat-head/ph.framework</RepositoryUrl>
+        <PackageId>PatHead.Framework.Uow</PackageId>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PatHead.Framework.Repository\PatHead.Framework.Repository.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.9" />
-      <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.9" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.9"/>
+        <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.9"/>
     </ItemGroup>
 
 </Project>

@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\PatHead.Framework.Repository\PatHead.Framework.Repository.csproj" />
+        <ProjectReference Include="..\..\src\PatHead.Framework.Uow\PatHead.Framework.Uow.csproj" />
     </ItemGroup>
 
 </Project>

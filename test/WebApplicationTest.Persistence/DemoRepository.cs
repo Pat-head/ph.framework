@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using PatHead.Framework.Repository;
 using PatHead.Framework.Uow.EFCore;
 using WebApplicationTest.Domain;
 using WebApplicationTest.Domain.Entities;

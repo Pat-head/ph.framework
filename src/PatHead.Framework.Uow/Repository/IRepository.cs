@@ -1,7 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
-namespace PatHead.Framework.Repository
+namespace PatHead.Framework.Uow.Repository
 {
     public interface IRepository<TEntity>
     {
