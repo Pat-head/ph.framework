@@ -24,35 +24,40 @@ namespace PatHead.Framework.Uow
             var service = buildServiceProvider.GetService<IOptions<UnitOfWorkOptions>>();
             var unitOfWorkOptions = service.Value;
 
-            var assemblyDic = AppDomain.CurrentDomain.GetAssemblies()
-                .ToDictionary(x => x.GetName().Name, x => x);
+            #region ScanRepositoryAssembly
 
-            var repositoryGenericType = unitOfWorkOptions.RepositoryGenericType;
-
-            foreach (var repositoryAssemblyName in unitOfWorkOptions.ScanRepositoryAssembly)
+            if (unitOfWorkOptions.ScanRepositoryAssembly.Any())
             {
-                if (assemblyDic.ContainsKey(repositoryAssemblyName))
+                var assemblyDic = AppDomain.CurrentDomain.GetAssemblies()
+                    .ToDictionary(x => x.GetName().Name, x => x);
+                var repositoryGenericType = unitOfWorkOptions.RepositoryGenericType;
+                foreach (var repositoryAssemblyName in unitOfWorkOptions.ScanRepositoryAssembly)
                 {
-                    var assembly = assemblyDic[repositoryAssemblyName];
-
-                    var types = assembly
-                        .GetTypes()
-                        .Where(x =>
-                            !x.IsGenericType &&
-                            !x.IsAbstract &&
-                            x.IsClass &&
-                            x.BaseType != null &&
-                            x.BaseType.IsGenericType &&
-                            x.BaseType.GetGenericTypeDefinition() == repositoryGenericType)
-                        .ToList();
-
-                    foreach (var type in types)
+                    if (assemblyDic.ContainsKey(repositoryAssemblyName))
                     {
-                        var baseType = type.GetInterfaces().FirstOrDefault(t => t.Name == $"I{type.Name}");
-                        services.TryAddScoped(baseType, type);
+                        var assembly = assemblyDic[repositoryAssemblyName];
+
+                        var types = assembly
+                            .GetTypes()
+                            .Where(x =>
+                                !x.IsGenericType &&
+                                !x.IsAbstract &&
+                                x.IsClass &&
+                                x.BaseType != null &&
+                                x.BaseType.IsGenericType &&
+                                x.BaseType.GetGenericTypeDefinition() == repositoryGenericType)
+                            .ToList();
+
+                        foreach (var type in types)
+                        {
+                            var baseType = type.GetInterfaces().FirstOrDefault(t => t.Name == $"I{type.Name}");
+                            services.TryAddScoped(baseType, type);
+                        }
                     }
                 }
             }
+
+            #endregion
         }
     }
 
