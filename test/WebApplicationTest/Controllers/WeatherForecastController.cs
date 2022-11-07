@@ -23,7 +23,7 @@ namespace WebApplicationTest.Controllers
 
         public WeatherForecastController(IUnitOfWorkFactory unitOfWorkFactory)
         {
-            _unitOfWork = unitOfWorkFactory.GetUnitOfWork();
+            _unitOfWork = unitOfWorkFactory.GetUnitOfWork("System");
             _repository = _unitOfWork.GetSimpleRepository<DemoEntity>();
             _demoRepository = _unitOfWork.GetRepository<IDemoRepository>();
         }

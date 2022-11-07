@@ -12,17 +12,16 @@ namespace PatHead.Framework.Uow
         public static IServiceCollection AddUnitOfWork<TUnitOfWorkFactory>(this IServiceCollection services,
             Action<UnitOfWorkOptions> options) where TUnitOfWorkFactory : class, IUnitOfWorkFactory
         {
-            services.Configure(options);
+            UnitOfWorkManager.AddAction(options);
             services.AddScoped<IUnitOfWorkFactory, TUnitOfWorkFactory>();
-            ConfigRepository(services);
+            ConfigRepository(services, options);
             return services;
         }
 
-        private static void ConfigRepository(IServiceCollection services)
+        private static void ConfigRepository(IServiceCollection services, Action<UnitOfWorkOptions> optionsAction)
         {
-            var buildServiceProvider = services.BuildServiceProvider();
-            var service = buildServiceProvider.GetService<IOptions<UnitOfWorkOptions>>();
-            var unitOfWorkOptions = service.Value;
+            UnitOfWorkOptions unitOfWorkOptions = new UnitOfWorkOptions();
+            optionsAction(unitOfWorkOptions);
 
             #region ScanRepositoryAssembly
 
@@ -63,6 +62,11 @@ namespace PatHead.Framework.Uow
 
     public class UnitOfWorkOptions
     {
+        /// <summary>
+        /// UnitOfWork Name
+        /// </summary>
+        public string Name { get; set; } = "default";
+
         public List<Type> RegisterManagementContext { get; set; }
         public Type RepositoryGenericType { get; set; }
         public List<string> ScanRepositoryAssembly { get; set; }

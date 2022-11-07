@@ -5,7 +5,6 @@ using System.Text.Json;
 
 namespace WebApplicationTest.Domain.Entities
 {
-   
     [Table("demo", Schema = "public")]
     public class DemoEntity
     {
@@ -14,5 +13,12 @@ namespace WebApplicationTest.Domain.Entities
         /// </summary>
         [Column("id"), Key]
         public int Id { get; set; }
+
+
+        /// <summary>
+        /// 主键
+        /// </summary>
+        [Column("name")]
+        public string Name { get; set; }
     }
 }

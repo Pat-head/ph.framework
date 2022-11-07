@@ -36,11 +36,30 @@ namespace WebApplicationTest
 
             services.AddUnitOfWork<EFCoreUnitOfWorkFactory>(options =>
             {
+                options.Name = "System";
+
                 options.RegisterManagementContext = new List<Type>()
                 {
                     typeof(TestDbContext), typeof(Test2DbContext)
                 };
-                
+
+                options.RepositoryGenericType = typeof(BaseRepository<>);
+
+                options.ScanRepositoryAssembly = new List<string>()
+                {
+                    "WebApplicationTest.Persistence"
+                };
+            });
+
+            services.AddUnitOfWork<EFCoreUnitOfWorkFactory>(options =>
+            {
+                options.Name = "User";
+
+                options.RegisterManagementContext = new List<Type>()
+                {
+                    typeof(TestDbContext), typeof(Test2DbContext)
+                };
+
                 options.RepositoryGenericType = typeof(BaseRepository<>);
 
                 options.ScanRepositoryAssembly = new List<string>()
