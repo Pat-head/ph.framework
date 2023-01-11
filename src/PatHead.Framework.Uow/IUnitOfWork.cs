@@ -1,30 +1,27 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using PatHead.Framework.Uow.Entity;
 using PatHead.Framework.Uow.Repository;
 
 namespace PatHead.Framework.Uow
 {
     public interface IUnitOfWork
     {
-        public IRepository<TEntity> GetSimpleRepository<TEntity>() where TEntity : class;
+        public ICommonRepository<TEntity> GetSimpleRepository<TEntity>() where TEntity : class, IEntity;
 
         public T GetRepository<T>() where T : class;
 
-        TransactionWrapper<Object> BeginTransaction();
+        ITransactionWrapper BeginTransaction();
 
         void Commit();
 
         Task CommitAsync(CancellationToken cancellationToken = default);
     }
 
-    public class TransactionWrapper<TObject>
+    public interface ITransactionWrapper
     {
-        public TransactionWrapper(TObject inSideBeginTransaction)
-        {
-            Delegate = inSideBeginTransaction;
-        }
-
-        public TObject Delegate { get; set; }
+        void Commit();
+        void Rollback();
     }
 }

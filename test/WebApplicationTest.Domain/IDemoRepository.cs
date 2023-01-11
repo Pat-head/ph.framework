@@ -3,7 +3,7 @@ using WebApplicationTest.Domain.Entities;
 
 namespace WebApplicationTest.Domain
 {
-    public interface IDemoRepository : IRepository<DemoEntity>
+    public interface IDemoRepository : ICommonRepository<DemoEntity>
     {
     }
 }

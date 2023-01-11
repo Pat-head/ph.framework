@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
+using PatHead.Framework.Uow.Attributes;
+using PatHead.Framework.Uow.Repository;
 
 namespace PatHead.Framework.Uow
 {
@@ -29,7 +30,7 @@ namespace PatHead.Framework.Uow
             {
                 var assemblyDic = AppDomain.CurrentDomain.GetAssemblies()
                     .ToDictionary(x => x.GetName().Name, x => x);
-                var repositoryGenericType = unitOfWorkOptions.RepositoryGenericType;
+
                 foreach (var repositoryAssemblyName in unitOfWorkOptions.ScanRepositoryAssembly)
                 {
                     if (assemblyDic.ContainsKey(repositoryAssemblyName))
@@ -44,7 +45,8 @@ namespace PatHead.Framework.Uow
                                 x.IsClass &&
                                 x.BaseType != null &&
                                 x.BaseType.IsGenericType &&
-                                x.BaseType.GetGenericTypeDefinition() == repositoryGenericType)
+                                x.GetCustomAttributes(typeof(RepositoryAttribute), false).Any()
+                            )
                             .ToList();
 
                         foreach (var type in types)
@@ -68,7 +70,6 @@ namespace PatHead.Framework.Uow
         public string Name { get; set; } = "default";
 
         public List<Type> RegisterManagementContext { get; set; }
-        public Type RepositoryGenericType { get; set; }
         public List<string> ScanRepositoryAssembly { get; set; }
     }
 }

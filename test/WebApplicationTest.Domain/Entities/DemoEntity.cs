@@ -2,23 +2,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
+using PatHead.Framework.Uow.Entity;
 
 namespace WebApplicationTest.Domain.Entities
 {
-    [Table("demo", Schema = "public")]
-    public class DemoEntity
+    public class DemoEntity : BaseIntegerKeyEntity
     {
-        /// <summary>
-        /// 主键
-        /// </summary>
-        [Column("id"), Key]
-        public int Id { get; set; }
-
-
-        /// <summary>
-        /// 主键
-        /// </summary>
-        [Column("name")]
         public string Name { get; set; }
     }
 }

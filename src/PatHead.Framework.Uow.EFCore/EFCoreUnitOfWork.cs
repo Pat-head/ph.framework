@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using PatHead.Framework.Uow.Entity;
 using PatHead.Framework.Uow.Repository;
 
 namespace PatHead.Framework.Uow.EFCore
@@ -18,7 +21,7 @@ namespace PatHead.Framework.Uow.EFCore
             _dbContexts = dbContexts;
         }
 
-        public IRepository<TEntity> GetSimpleRepository<TEntity>() where TEntity : class
+        public ICommonRepository<TEntity> GetSimpleRepository<TEntity>() where TEntity : class, IEntity
         {
             foreach (var dbContext in _dbContexts)
             {
@@ -42,9 +45,15 @@ namespace PatHead.Framework.Uow.EFCore
             return (T)_serviceProvider.GetService(typeof(T));
         }
 
-        public TransactionWrapper<object> BeginTransaction()
+        private List<IDbContextTransaction> InSideBeginTransaction()
         {
-            throw new NotImplementedException();
+            return _dbContexts.Select(dbContext => dbContext.Database.BeginTransaction()).ToList();
+        }
+
+        public ITransactionWrapper BeginTransaction()
+        {
+            var inSideBeginTransaction = InSideBeginTransaction();
+            return new TransactionWrapper(inSideBeginTransaction);
         }
 
         public void Commit()
@@ -58,6 +67,26 @@ namespace PatHead.Framework.Uow.EFCore
             {
                 await dbContext.SaveChangesAsync(cancellationToken);
             }
+        }
+    }
+
+    public class TransactionWrapper : ITransactionWrapper
+    {
+        public TransactionWrapper(List<IDbContextTransaction> inSideBeginTransaction)
+        {
+            Delegate = inSideBeginTransaction;
+        }
+
+        private List<IDbContextTransaction> Delegate { get; set; }
+
+        public void Commit()
+        {
+            Delegate.ForEach(x => x.Commit());
+        }
+
+        public void Rollback()
+        {
+            Delegate.ForEach(x => x.Rollback());
         }
     }
 }

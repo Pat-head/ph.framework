@@ -43,8 +43,6 @@ namespace WebApplicationTest
                     typeof(TestDbContext), typeof(Test2DbContext)
                 };
 
-                options.RepositoryGenericType = typeof(BaseRepository<>);
-
                 options.ScanRepositoryAssembly = new List<string>()
                 {
                     "WebApplicationTest.Persistence"
@@ -60,8 +58,6 @@ namespace WebApplicationTest
                     typeof(TestDbContext), typeof(Test2DbContext)
                 };
 
-                options.RepositoryGenericType = typeof(BaseRepository<>);
-
                 options.ScanRepositoryAssembly = new List<string>()
                 {
                     "WebApplicationTest.Persistence"
@@ -70,13 +66,13 @@ namespace WebApplicationTest
 
             services.AddDbContext<TestDbContext>(options =>
             {
-                options.UseNpgsql("?")
+                options.UseNpgsql(Configuration["Db:Test1"])
                     .UseSnakeCaseNamingConvention();
             });
 
             services.AddDbContext<Test2DbContext>(options =>
             {
-                options.UseNpgsql("?")
+                options.UseNpgsql(Configuration["Db:Test2"])
                     .UseSnakeCaseNamingConvention();
             });
         }

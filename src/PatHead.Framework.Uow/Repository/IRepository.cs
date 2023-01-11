@@ -1,15 +1,29 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using PatHead.Framework.Uow.Entity;
 
 namespace PatHead.Framework.Uow.Repository
 {
-    public interface IRepository<TEntity>
+    public interface ICommonRepository<TEntity> : IQueryRepository<TEntity> where TEntity : IEntity
     {
         public void Add(TEntity entity);
 
-        public IQueryable<TEntity> GetQueryable();
-
         public void Remove(TEntity entity);
+        public void RemoveRange(List<TEntity> entities);
 
         public void Update(TEntity entity);
+    }
+
+    public interface IQueryRepository<TEntity> : IRepository<TEntity> where TEntity : IEntity
+    {
+        public IQueryable<TEntity> GetQueryable();
+    }
+
+    public interface IRepository<TEntity> where TEntity : IEntity
+    {
+    }
+
+    public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
+    {
     }
 }

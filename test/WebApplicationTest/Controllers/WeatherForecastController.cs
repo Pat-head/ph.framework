@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PatHead.Framework.Uow;
+using PatHead.Framework.Uow.EFCore;
 using PatHead.Framework.Uow.Repository;
 using WebApplicationTest.Domain;
 using WebApplicationTest.Domain.Entities;
@@ -18,7 +19,7 @@ namespace WebApplicationTest.Controllers
     public class WeatherForecastController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IRepository<DemoEntity> _repository;
+        private readonly ICommonRepository<DemoEntity> _repository;
         private readonly IDemoRepository _demoRepository;
 
         public WeatherForecastController(IUnitOfWorkFactory unitOfWorkFactory)
@@ -28,30 +29,39 @@ namespace WebApplicationTest.Controllers
             _demoRepository = _unitOfWork.GetRepository<IDemoRepository>();
         }
 
-
         [HttpGet]
         public async Task<string> Get()
         {
-            var demoEntity = new DemoEntity();
+            var transaction = _unitOfWork.BeginTransaction();
+            try
+            {
+                var demoEntity = new DemoEntity();
 
-            _repository.Add(demoEntity);
+                _repository.Add(demoEntity);
 
-            await _unitOfWork.CommitAsync();
+                await _unitOfWork.CommitAsync();
 
-            var entity = demoEntity;
-            
-            demoEntity = await _demoRepository.GetQueryable().Where(x => x.Id == entity.Id)
-                .FirstOrDefaultAsync();
+                var entity = demoEntity;
 
-            demoEntity.Id = 11;
+                demoEntity = await _demoRepository.GetQueryable().Where(x => x.Id == entity.Id)
+                    .FirstOrDefaultAsync();
 
-            _demoRepository.Update(demoEntity);
+                demoEntity.Name = "11";
 
-            await _unitOfWork.CommitAsync();
+                _demoRepository.Update(demoEntity);
 
-            _repository.Remove(demoEntity);
+                await _unitOfWork.CommitAsync();
 
-            await _unitOfWork.CommitAsync();
+                _repository.Remove(demoEntity);
+
+                await _unitOfWork.CommitAsync();
+                
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+            }
 
             return "";
         }
