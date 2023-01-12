@@ -4,7 +4,7 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <Version>0.0.0.5</Version>
+        <Version>0.0.0.6</Version>
         <AssemblyName>PatHead.Framework.Uow</AssemblyName>
         <RootNamespace>PatHead.Framework.Uow</RootNamespace>
         <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>

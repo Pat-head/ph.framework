@@ -32,30 +32,35 @@ namespace WebApplicationTest.Controllers
         [HttpGet]
         public async Task<string> Get()
         {
+            
+
+            
             var transaction = _unitOfWork.BeginTransaction();
             try
             {
+                await _demoRepository.Run();
+                
                 var demoEntity = new DemoEntity();
-
+            
                 _repository.Add(demoEntity);
-
+            
                 await _unitOfWork.CommitAsync();
-
+            
                 var entity = demoEntity;
-
+            
                 demoEntity = await _demoRepository.GetQueryable().Where(x => x.Id == entity.Id)
                     .FirstOrDefaultAsync();
-
+            
                 demoEntity.Name = "11";
-
+            
                 _demoRepository.Update(demoEntity);
-
+            
                 await _unitOfWork.CommitAsync();
-
+            
                 _repository.Remove(demoEntity);
-
+            
                 await _unitOfWork.CommitAsync();
-                
+            
                 transaction.Commit();
             }
             catch (Exception e)

@@ -3,7 +3,7 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <Version>0.0.0.5</Version>
+        <Version>0.0.0.6</Version>
         <AssemblyName>PatHead.Framework.Uow.EFCore</AssemblyName>
         <RootNamespace>PatHead.Framework.Uow.EFCore</RootNamespace>
         <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
@@ -19,12 +19,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PatHead.Framework.Uow\PatHead.Framework.Uow.csproj" />
+        <ProjectReference Include="..\PatHead.Framework.Uow\PatHead.Framework.Uow.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="EFCore.NamingConventions" Version="1.1.1" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
+        <PackageReference Include="EFCore.NamingConventions" Version="1.1.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
+        <PackageReference Include="Dapper" Version="2.0.4" />
     </ItemGroup>
 
 </Project>
