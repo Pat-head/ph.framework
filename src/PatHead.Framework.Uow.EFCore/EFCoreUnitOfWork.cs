@@ -27,16 +27,18 @@ namespace PatHead.Framework.Uow.EFCore
             {
                 foreach (var propertyInfo in dbContext.GetType().GetProperties())
                 {
-                    if (propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>))
+                    if (propertyInfo.PropertyType.IsGenericType)
                     {
-                        if (propertyInfo.PropertyType.GenericTypeArguments[0].FullName == typeof(TEntity).FullName)
+                        if (propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>))
                         {
-                            return RepositoryFactory.GenerateRepository<TEntity>(dbContext);
+                            if (propertyInfo.PropertyType.GenericTypeArguments[0].FullName == typeof(TEntity).FullName)
+                            {
+                                return RepositoryFactory.GenerateRepository<TEntity>(dbContext);
+                            }
                         }
                     }
                 }
             }
-
             return null;
         }
 
