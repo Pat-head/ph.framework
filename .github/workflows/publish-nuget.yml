@@ -36,7 +36,7 @@ jobs:
         run: dotnet pack -c Release ./src/PatHead.Framework.Uow.EFCore/PatHead.Framework.Uow.EFCore.csproj
       - name: Publish the package to Github Packages
         run: |
-          cd ./src/PatHead.StorageService.Util/bin/Release
+          cd ./src/PatHead.Framework.Uow.EFCore/bin/Release
           dotnet nuget push "*.nupkg" --api-key $NUGET_TOKEN -s https://api.nuget.org/v3/index.json --skip-duplicate
         env: 
           NUGET_TOKEN: ${{ secrets.NUGETTOKEN }}
