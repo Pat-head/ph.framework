@@ -12,6 +12,9 @@ namespace PatHead.Framework.Uow.EFCore
     public class EFCoreUnitOfWorkFactory : IUnitOfWorkFactory
     {
         private readonly IServiceScope _serviceScope;
+
+        private readonly IServiceProvider _serviceProvider;
+
         private readonly ILogger<EFCoreUnitOfWorkFactory> _logger;
 
         public EFCoreUnitOfWorkFactory(
@@ -20,6 +23,7 @@ namespace PatHead.Framework.Uow.EFCore
         {
             _logger = logger;
             _serviceScope = serviceProvider.CreateScope();
+            _serviceProvider = serviceProvider;
         }
 
         /// <summary>
@@ -35,6 +39,21 @@ namespace PatHead.Framework.Uow.EFCore
 
             var registerManagementDbContext = unitOfWorkOptions.RegisterManagementContext
                 .Select(type => (DbContext)_serviceScope.ServiceProvider.GetService(type)).ToList();
+
+            _logger.LogInformation($"Current init UnitOfWork DbContexts cost:{stopwatch.ElapsedMilliseconds}ms");
+
+            return new EFCoreUnitOfWork(_serviceScope.ServiceProvider, registerManagementDbContext);
+        }
+
+        public IUnitOfWork GetGlobalUnitOfWork(string name = "default")
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            var unitOfWorkOptions = UnitOfWorkManager.GetUnitOfWorkOptions(name);
+
+            var registerManagementDbContext = unitOfWorkOptions.RegisterManagementContext
+                .Select(type => (DbContext)_serviceProvider.GetService(type)).ToList();
 
             _logger.LogInformation($"Current init UnitOfWork DbContexts cost:{stopwatch.ElapsedMilliseconds}ms");
 
