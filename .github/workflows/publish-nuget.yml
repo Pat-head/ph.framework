@@ -38,7 +38,11 @@ jobs:
         run: |
           cd ./src/PatHead.Framework.Uow.EFCore/bin/Release
           dotnet nuget push "*.nupkg" --api-key $NUGET_TOKEN -s https://api.nuget.org/v3/index.json --skip-duplicate
+        env: 
+          NUGET_TOKEN: ${{ secrets.NUGETTOKEN }}
+      - name: Publish the package to Github Packages 2
+        run: |
           cd ./src/PatHead.Framework.Uow/bin/Release
           dotnet nuget push "*.nupkg" --api-key $NUGET_TOKEN -s https://api.nuget.org/v3/index.json --skip-duplicate
-        env: 
+        env:
           NUGET_TOKEN: ${{ secrets.NUGETTOKEN }}
